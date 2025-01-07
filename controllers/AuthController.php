@@ -33,24 +33,15 @@ require_once (__DIR__.'/../models/User.php');
                    $password = $_POST['password'];
                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
       
-                   $user = [$name,$hashed_password,$email];
-      
-                   
-      
+                   $user = [$name,$email,$hashed_password];
                    $lastInsertId = $this->User->register($user);
-      
-                   
-                  
                        $_SESSION['user_loged_in_id'] = $lastInsertId ;
-                       
        
-                       if ($lastInsertId ) {
+                       if ($_SESSION['is_admin'] === true ) {
                            header('Location: /admin');
-                       } else if ($lastInsertId ) {
+                       } else {
                            header('Location: /client');
-                       } else if ($lastInsertId) {
-                           header('Location: /freelancer');
-                       }                    
+                       }                
                        
                        exit;
                    
