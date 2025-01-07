@@ -10,7 +10,6 @@ class Router
     public function add($method, $route, $callback) {
         $method = strtoupper($method);
 
-
         $route = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([a-zA-Z0-9_]+)', $route);
 
         $this->routes[$method][$route] = $callback;
@@ -21,7 +20,6 @@ class Router
         $method = strtoupper($method);
 
         foreach ($this->routes[$method] as $route => $callback) {
-
             if (preg_match('#^' . $route . '$#', $uri, $matches)) {
                 array_shift($matches);
 
@@ -34,7 +32,6 @@ class Router
                 return call_user_func_array($callback, $matches);
             }
         }
-
         http_response_code(404);
         echo "404 - Not Found";
     }
