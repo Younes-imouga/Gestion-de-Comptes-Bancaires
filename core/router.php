@@ -19,6 +19,7 @@ class Router
         $uri = parse_url($uri, PHP_URL_PATH);
         $method = strtoupper($method);
 
+
         foreach ($this->routes[$method] as $route => $callback) {
             if (preg_match('#^' . $route . '$#', $uri, $matches)) {
                 array_shift($matches);

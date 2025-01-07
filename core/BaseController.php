@@ -6,7 +6,7 @@ class BaseController
     {
         extract($data);
         include __DIR__ . '/../views/' . $view . '.php';
-    }   
+    }
     public function renderAdmin($view, $data = [])
     {
         extract($data);
