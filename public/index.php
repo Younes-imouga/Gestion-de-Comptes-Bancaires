@@ -11,5 +11,5 @@
     $router = new Router();
     Route::setRouter($router);
 
-    // Route::get();
+    Route::get();
     // Route::post();

@@ -47,10 +47,10 @@
             <h2 class="text-2xl font-bold text-gray-800">Effectuer un virement</h2>
             
             <div class="bg-white p-6 rounded-lg shadow mt-6">
-                <form class="space-y-4">
+                <form class="space-y-4" action="/transfer" method="post">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Compte à débiter</label>
-                        <select class="mt-1 block w-full rounded-md border border-gray-300 p-2">
+                        <select class="mt-1 block w-full rounded-md border border-gray-300 p-2" name = "">
                             <option>Compte Courant - FR76 1234 5678 9012</option>
                             <option>Compte Épargne - FR76 9876 5432 1098</option>
                         </select>
