@@ -2,6 +2,11 @@
 
 class BaseController
 {
+    public function renderView($view, $data = [])
+    {
+        extract($data);
+        include __DIR__ . '/../views/' . $view . '.php';
+    }
     public function renderAdmin($view, $data = [])
     {
         extract($data);

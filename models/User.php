@@ -6,8 +6,10 @@ class User extends DB{
     }
     public function Register($user){
         try{
-            $result= $this->conn->prepare("INSERT INTO users(name,email,password,profile_pic) VALUES (?,?,?,?)");
+
+            $result= $this->conn->prepare("INSERT INTO users(name,email,password) VALUES (?,?,?)");
             $result->execute($user);
+            echo 'register';
             return $this->conn->lastInsertId();
         }
         catch(PDOException $e){
