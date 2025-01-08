@@ -63,5 +63,5 @@ class account extends db {
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
 }

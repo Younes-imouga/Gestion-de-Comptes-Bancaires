@@ -34,14 +34,14 @@ class ClientController extends BaseController {
     function displayDashboard(){
         $this->renderView('client/index');
     }
+    
     public function handleAlimenterForm() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $account_id = $_POST['account_id'] ?? null;
             $amount = $_POST['amount'] ?? null;
-            $beneficiary_account_id = $_POST['beneficiary_account_id'] ?? null;
-            $transaction_type = $_POST['paymentMethod'] ?? null;
+        
 
-            if (empty($account_id) || empty($amount) || empty($transaction_type)) {
+            if (empty($account_id) || empty($amount)) {
                 echo "Tous les champs obligatoires doivent être remplis.";
                 return;
             }
