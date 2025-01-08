@@ -39,5 +39,9 @@ class User extends DB{
          echo"Error:".$e->getMessage();
     }
     }
+
+    public function GetIdByName() {
+        $sql = "SELECT * FROM users"
+    }
     
 }

@@ -47,25 +47,25 @@
             <h2 class="text-2xl font-bold text-gray-800">Effectuer un virement</h2>
             
             <div class="bg-white p-6 rounded-lg shadow mt-6">
-                <form class="space-y-4">
+                <form class="space-y-4" action="/transfer" method="post">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Compte à débiter</label>
-                        <select class="mt-1 block w-full rounded-md border border-gray-300 p-2">
+                        <label class="block text-sm font-medium text-gray-700" for = "sender_account">Compte à débiter</label>
+                        <select class="mt-1 block w-full rounded-md border border-gray-300 p-2" name = "sender_account">
                             <option>Compte Courant - FR76 1234 5678 9012</option>
                             <option>Compte Épargne - FR76 9876 5432 1098</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Bénéficiaire</label>
-                        <select class="mt-1 block w-full rounded-md border border-gray-300 p-2">
+                        <label class="block text-sm font-medium text-gray-700" for = "beneficiary_account">Bénéficiaire</label>
+                        <select class="mt-1 block w-full rounded-md border border-gray-300 p-2" name = "beneficiary_account">
                             <option>John Doe - FR76 1111 2222 3333</option>
                             <option>Jane Smith - FR76 4444 5555 6666</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Montant</label>
+                        <label class="block text-sm font-medium text-gray-700" for = "amount">Montant</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <span class="text-gray-500 sm:text-sm">€</span>
@@ -76,17 +76,9 @@
                                 step="0.01"
                                 class="pl-7 block w-full rounded-md border border-gray-300 p-2" 
                                 placeholder="0.00"
+                                for = "amount"
                             />
                         </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Motif</label>
-                        <input 
-                            type="text"
-                            class="mt-1 block w-full rounded-md border border-gray-300 p-2" 
-                            placeholder="Motif du virement"
-                        />
                     </div>
 
                     <div class="pt-4">

@@ -24,7 +24,6 @@ class Route
         if (!self::$router) {
             throw new Exception('Router not set. Call Route::setRouter() first.');
         }
-
         self::$router->add($method, $route, $callback);
     }
 }
