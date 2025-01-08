@@ -19,8 +19,10 @@ Route::get("/register", [AuthController::class, 'displaySignUp']);
 Route::post("/register", [AuthController::class, 'handleRegister']);
 
 Route::get("/dashboard", [ClientController::class, 'displayDashboard']);
-Route::post("/alimenter", [ClientController::class, 'handleAlimentation']);
+Route::post("/alimenter", [ClientController::class, 'handleAlimenterForm']);
 
+Route::get("/login", [AuthController::class, 'displayLogin']);
+Route::post("/login", [AuthController::class, 'handleLogin']);
 
 Route::get("/transfer", [ClientController::class, 'displayTransfer']);
 Route::post("/transfer", [ClientController::class, 'handleTransfer']);
