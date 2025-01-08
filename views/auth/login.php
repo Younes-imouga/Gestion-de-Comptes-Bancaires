@@ -19,7 +19,7 @@
     </div>
 
     <!-- Login Form -->
-    <form>
+    <form action="/login" method="post">
       <!-- Email -->
       <div class="mb-4">
         <label for="email" class="block text-sm font-medium text-gray-400">EMAIL ADDRESS</label>
@@ -36,14 +36,14 @@
       </div>
 
       <!-- Login Button -->
-      <button type="submit" class="w-full py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold">
+      <button name="login" type="submit" class="w-full py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold">
         Login
       </button>
     </form>
 
     <!-- Back to store -->
     <div class="flex justify-between items-center mb-6">
-      <a href="signup.html" class="text-gray-400 hover:text-white text-sm">Not a member? <span class="text-blue-400">Sign Up</span></a>
+      <a href="/" class="text-gray-400 hover:text-white text-sm">Not a member? <span class="text-blue-400">Sign Up</span></a>
     </div>
   </div>
 </body>

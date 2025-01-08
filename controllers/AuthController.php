@@ -51,6 +51,33 @@ require_once (__DIR__.'/../models/User.php');
             }
             } 
          }
+         
+         public function handleLogin(){
+
+             
+             if ($_SERVER["REQUEST_METHOD"] == "POST"){
+                 if (isset($_POST['login'])) {
+                    $email = $_POST['email'];
+                    $password = $_POST['password'];
+                    $userD = [$email,$password];
+                    $user = $this->User->login($userD);
+                    $_SESSION['user_loged_in_id'] = $user["id"];
+                   
+                    if ($user && $_SESSION['is_admin'] === true ) {
+                        header('Location: /admin');
+                    } else {
+                        header('Location: /client');
+                    }                
+                    
+                    exit;
+                
+                    
+                }
+            }
+       
+      
+         }
     }
+    
 
 ?>

@@ -13,4 +13,7 @@ Route::setRouter($router);
 
 Route::get("/register", [AuthController::class, 'displaySignUp']);
 Route::post("/register", [AuthController::class, 'handleRegister']);
+
+Route::get("/login", [AuthController::class, 'displayLogin']);
+Route::post("/login", [AuthController::class, 'handleLogin']);
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
