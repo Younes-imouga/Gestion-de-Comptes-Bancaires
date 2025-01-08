@@ -60,12 +60,12 @@ require_once (__DIR__.'/../models/User.php');
                     $password = $_POST['password'];
                     $userD = [$email,$password];
                     $user = $this->User->login($userD);
-                    $_SESSION['user_loged_in_id'] = $user["id"];
+                    $_SESSION['user_logged_in_id'] = $user["id"];
                    
                     if ($user && $_SESSION['is_admin'] === true ) {
                         header('Location: /admin');
                     } else {
-                        header('Location: /client');
+                        header('Location: /dashboard');
                     }                
                     
                     exit;

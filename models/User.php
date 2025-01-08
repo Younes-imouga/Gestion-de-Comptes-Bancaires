@@ -41,7 +41,7 @@ class User extends DB{
     }
 
     public function GetIdByName() {
-        $sql = "SELECT * FROM users"
+        $sql = "SELECT * FROM users";
     }
     
 }
