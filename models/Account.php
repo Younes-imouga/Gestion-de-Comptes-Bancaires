@@ -56,5 +56,12 @@ class account extends db {
             echo "Transfer failed: " . $e->getMessage();
         }
     }
+
+    function displayUserAccounts($user_id){
+        $sql = $this->conn->prepare("SELECT * FROM accounts WHERE user_id = ?");
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
 }
