@@ -1,11 +1,10 @@
 <?php
 
-require_once (__DIR__.'/../models/User.php');
+require_once (__DIR__.'/../models/Client.php');
 class ClientController extends BaseController {
     private $client; 
 
     public function __construct() {
-        parent::__construct();
         $this->client = new Client();
     }
     function displayTransfer(){
