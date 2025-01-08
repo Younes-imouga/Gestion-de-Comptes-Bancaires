@@ -32,24 +32,15 @@ require_once (__DIR__.'/../models/User.php');
                    $password = $_POST['password'];
                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
       
-                   $user = [$name,$hashed_password,$email];
-      
-                   
-      
+                   $user = [$name,$email,$hashed_password];
                    $lastInsertId = $this->User->register($user);
-      
-                   
-                  
                        $_SESSION['user_loged_in_id'] = $lastInsertId ;
-                       
        
-                       if ($lastInsertId ) {
+                       if ($_SESSION['is_admin'] === true ) {
                            header('Location: /admin');
-                       } else if ($lastInsertId ) {
+                       } else {
                            header('Location: /client');
-                       } else if ($lastInsertId) {
-                           header('Location: /freelancer');
-                       }                    
+                       }                
                        
                        exit;
                    
@@ -59,6 +50,33 @@ require_once (__DIR__.'/../models/User.php');
             }
             } 
          }
+         
+         public function handleLogin(){
+
+             
+             if ($_SERVER["REQUEST_METHOD"] == "POST"){
+                 if (isset($_POST['login'])) {
+                    $email = $_POST['email'];
+                    $password = $_POST['password'];
+                    $userD = [$email,$password];
+                    $user = $this->User->login($userD);
+                    $_SESSION['user_loged_in_id'] = $user["id"];
+                   
+                    if ($user && $_SESSION['is_admin'] === true ) {
+                        header('Location: /admin');
+                    } else {
+                        header('Location: /client');
+                    }                
+                    
+                    exit;
+                
+                    
+                }
+            }
+       
+      
+         }
     }
+    
 
 ?>

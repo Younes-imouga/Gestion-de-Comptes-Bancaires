@@ -20,6 +20,7 @@ if (isset($_SESSION['logged'])) {
 Route::get("/register", [AuthController::class, 'displaySignUp']);
 Route::post("/register", [AuthController::class, 'handleRegister']);
 
+
 Route::get("/transfer", [ClientController::class, 'displayTransfer']);
 Route::post("/transfer", [ClientController::class, 'handleTransfer']);
 

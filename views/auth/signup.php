@@ -44,7 +44,7 @@
 
     <!-- Back to store -->
     <div class="flex justify-between items-center mb-6">
-      <a href="login.html" class="text-gray-400 hover:text-white text-sm">Not a member? <span class="text-blue-400">Log In</span></a>
+      <a href="/login" class="text-gray-400 hover:text-white text-sm">Not a member? <span class="text-blue-400">Log In</span></a>
     </div> 
   </div>
 </body>
