@@ -16,7 +16,7 @@ if (!isset($_SESSION['user_logged_in_id'])) {
     Route::get("/", [AuthController::class, 'displayLogin']);
 } else {
     if (isset($_SESSION['is_admin'])) {
-        
+        Route::get("/", [AdminController::class, 'displayDashboardAdmin']);
     }else{
         Route::get("/", [ClientController::class, 'displayDashboard']);
     }
@@ -31,7 +31,7 @@ Route::post("/alimenter", [ClientController::class, 'handleAlimentation']);
 Route::get("/virement", [ClientController::class, 'displayTransfer']);
 Route::post("/transfer", [ClientController::class, 'handleTransfer']);
 
-Route::get("/compte", [ClientController::class, 'displayAccounts']);
+Route::get("/account", [ClientController::class, 'displayAccounts']);
 
 Route::get("/historique", [ClientController::class, 'displayTransactions']);
 

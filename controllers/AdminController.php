@@ -1,5 +1,5 @@
 <?php
-
+require_once '../models/Admin.php';
 class AdminController extends BaseController {
 
     public function __construct() {
@@ -17,12 +17,24 @@ class AdminController extends BaseController {
         $this->renderAdmin('index');
     }
     function displayClientAdmin(){
-        $this->renderAdmin('clients');
+        $adminModel = new Admin();
+        $user_id = $_SESSION['user_logged_in_id'];
+        $users = $adminModel->displayUsers($user_id);
+        foreach ($users as $key => $user) {
+            $accounts = $adminModel->getAccounts($user['id']);
+            $users[$key]['accounts'] = $accounts;
+        }
+        
+        $this->renderView('admin/clients', [
+            'users' => $users
+        ]);
     }
+    
     function displayAccountsAdmin(){
         $this->renderAdmin('compte');
     }
     function displaytransactionsAdmin(){
         $this->renderAdmin('transactions');
     }
+
 }

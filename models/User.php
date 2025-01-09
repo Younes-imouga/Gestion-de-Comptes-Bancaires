@@ -94,4 +94,17 @@ class User extends DB{
             die;
         }
     }
+
+    public function getAllUsers() {
+        try {
+            $sql = "SELECT id, name, email FROM users WHERE role = 'client'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error getting users: " . $e->getMessage());
+            return [];
+        }
+    }
+
 }
