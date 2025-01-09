@@ -23,12 +23,12 @@ class User extends DB{
             $result->execute([$userD[0]]);
             $user=$result->fetch(PDO::FETCH_ASSOC);
 
-            if($user && password_verify($userD[1],$user["password"])){ 
-                $checkAdmin = "SELECT * FROM users ORDER BY id ASC LIMIT 1"; 
-                $adminResult = $this->conn->query($checkAdmin); 
+            if($user && password_verify($userD[1],$user["password"])){
+                $checkAdmin = "SELECT * FROM users ORDER BY id ASC LIMIT 1";
+                $adminResult = $this->conn->query($checkAdmin);
                 $admin = $adminResult->fetch(PDO::FETCH_ASSOC);
                 
-                if ($user['email'] === $admin['email']) {
+                if ($user['email'] === $admin['email']) {   
                     $_SESSION['is_admin'] = true;
                 } else {
                     $_SESSION['is_admin'] = false;
@@ -48,12 +48,6 @@ class User extends DB{
     public function GetIdByName() {
         $sql = "SELECT * FROM users";
     }
-
-    public function logout() {
-        session_start();
-        session_destroy();
-        header('Location: /login');
-        exit;
 
     public function getUserById($id) {
         try {
