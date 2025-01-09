@@ -49,12 +49,6 @@ class User extends DB{
         $sql = "SELECT * FROM users";
     }
 
-    public function logout() {
-        session_start();
-        session_destroy();
-        header('Location: /login');
-        exit;
-
     public function getUserById($id) {
         try {
             $sql = "SELECT id, name, email FROM users WHERE id = ?";
