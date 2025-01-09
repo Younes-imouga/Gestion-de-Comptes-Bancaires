@@ -47,9 +47,9 @@ class Account extends db
             $update_beneficiary_stmt = $this->conn->prepare($update_beneficiary_sql);
             $update_beneficiary_stmt->execute([$new_beneficiary_balance, $beneficiary_id]);
 
-            $transaction_sql = "INSERT INTO transactions (account_id, amount, beneficiary_account_id, transaction_type) VALUES (?, ?, ?, transfert)";
+            $transaction_sql = "INSERT INTO transactions (account_id, amount, beneficiary_account_id, transaction_type) VALUES (?, ?, ?, ?)";
             $transaction_stmt = $this->conn->prepare($transaction_sql);
-            $transaction_stmt->execute([$account_id, $amount, $beneficiary_id]);
+            $transaction_stmt->execute([$account_id, $amount, $beneficiary_id, "transfert"]);
 
             $this->conn->commit();
 
