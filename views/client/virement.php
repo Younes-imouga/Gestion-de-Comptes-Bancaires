@@ -115,7 +115,7 @@
     </div>
 
     <script>
-        //lucide.createIcons();
+        lucide.createIcons();
     </script>
 </body>
 </html>

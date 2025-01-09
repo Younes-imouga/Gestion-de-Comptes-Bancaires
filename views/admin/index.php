@@ -48,17 +48,9 @@
                             <i data-lucide="repeat" class="w-5 h-5 mr-3"></i>
                             <span>Transactions</span>
                         </a>
-                        <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                            <i data-lucide="bell" class="w-5 h-5 mr-3"></i>
-                            <span>Notifications</span>
-                        </a>
-                        <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                            <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
-                            <span>Paramètres</span>
-                        </a>
                     </nav>
 
-                    <!-- Profil Admin avec Déconnexion -->
+                            <!-- Profil Admin avec Déconnexion -->
                     <div class="border-t border-gray-800 p-6">
                         <div class="relative">
                             <button 
