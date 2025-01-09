@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../core/router.php';
 require_once '../core/route.php';
 
@@ -11,32 +12,36 @@ require_once '../controllers/AuthController.php';
 $router = new Router();
 Route::setRouter($router);
 
-
-Route::get("/", [AuthController::class, 'displaySignUp']);
-
-
-Route::get("/register", [AuthController::class, 'displaySignUp']);
-Route::post("/register", [AuthController::class, 'handleRegister']);
-
-Route::get("/dashboard", [ClientController::class, 'displayDashboard']);
-Route::post("/alimenter", [ClientController::class, 'handleAlimenterForm
-']);
+if (!isset($_SESSION['user_logged_in_id'])) { 
+    Route::get("/", [AuthController::class, 'displayLogin']);
+} else {
+    if (isset($_SESSION['is_admin'])) {
+        
+    }else{
+        Route::get("/", [ClientController::class, 'displayDashboard']);
+    }
+}
 
 Route::get("/login", [AuthController::class, 'displayLogin']);
 Route::post("/login", [AuthController::class, 'handleLogin']);
 
-Route::get("/transfer", [ClientController::class, 'displayTransfer']);
+Route::get("/dashboard", [ClientController::class, 'displayDashboard']);
+Route::post("/alimenter", [ClientController::class, 'handleAlimentation']);
+
+Route::get("/virement", [ClientController::class, 'displayTransfer']);
 Route::post("/transfer", [ClientController::class, 'handleTransfer']);
 
+Route::get("/compte", [ClientController::class, 'displayAccounts']);
 
+Route::get("/historique", [ClientController::class, 'displayTransactions']);
 
+Route::get("/profile", [ClientController::class, 'displayprofile']);
 
+Route::post('/alimenter', [ClientController::class,'handleAlimenterForm']);
 
+Route::post('/retrait', [ClientController::class,'handleRetraitForm']);
 
-
-
-
-
+Route::get('/logout', [ClientController::class, 'logout']);
 
 
 
