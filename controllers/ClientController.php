@@ -139,13 +139,6 @@ class ClientController extends BaseController {
         }
     }
 
-    public function logout() {
-        session_start();
-        session_destroy();
-        header('Location: /login');
-        exit;
-    }
-
     public function displayProfile() {
         $userModel = new User();
         $user = $userModel->getUserById($_SESSION['user_logged_in_id']);

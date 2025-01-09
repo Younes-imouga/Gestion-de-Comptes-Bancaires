@@ -57,7 +57,7 @@ require_once (__DIR__.'/../models/User.php');
                     }
                    
                     if ($_SESSION['is_admin'] === true ) {
-                        header('Location: /admin');
+                        header('Location: /dashboardAdmin');
                     } else {
                         header('Location: /dashboard');
                         unset($_SESSION['is_admin']);               

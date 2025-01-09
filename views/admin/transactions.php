@@ -32,31 +32,31 @@
 
                 <!-- Navigation -->
                 <nav class="mt-6 flex-grow">
-                    <a href="#" class="flex items-center w-full px-6 py-3 text-white bg-gray-800">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="clients.html" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                        <i data-lucide="users" class="w-5 h-5 mr-3"></i>
-                        <span>Clients</span>
-                    </a>
-                    <a href="compte.html" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                        <i data-lucide="credit-card" class="w-5 h-5 mr-3"></i>
-                        <span>Comptes</span>
-                    </a>
-                    <a href="transactions.html" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                        <i data-lucide="repeat" class="w-5 h-5 mr-3"></i>
-                        <span>Transactions</span>
-                    </a>
-                    <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                        <i data-lucide="bell" class="w-5 h-5 mr-3"></i>
-                        <span>Notifications</span>
-                    </a>
-                    <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                        <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
-                        <span>Paramètres</span>
-                    </a>
-                </nav>
+                        <a href="/dashboardAdmin" class="flex items-center w-full px-6 py-3 text-white bg-gray-800">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                            <span>Dashboard</span>
+                        </a>
+                        <a href="/clients" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                            <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                            <span>Clients</span>
+                        </a>
+                        <a href="/compte" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                            <i data-lucide="credit-card" class="w-5 h-5 mr-3"></i>
+                            <span>Comptes</span>
+                        </a>
+                        <a href="/transactions" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                            <i data-lucide="repeat" class="w-5 h-5 mr-3"></i>
+                            <span>Transactions</span>
+                        </a>
+                        <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                            <i data-lucide="bell" class="w-5 h-5 mr-3"></i>
+                            <span>Notifications</span>
+                        </a>
+                        <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                            <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
+                            <span>Paramètres</span>
+                        </a>
+                    </nav>
 
                 <!-- Profil Admin avec Déconnexion -->
                 <div class="border-t border-gray-800 p-6">
@@ -84,7 +84,7 @@
                                 Paramètres
                             </a>
                             <a 
-                                href="javascript:logout()" 
+                                href="/logout" 
                                 class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700 rounded-b-lg"
                             >
                                 <i data-lucide="log-out" class="w-4 h-4 inline-block mr-2"></i>
@@ -379,15 +379,6 @@
             
             menu.classList.toggle('hidden');
             chevron.classList.toggle('rotate-180');
-        }
-
-        // Fonction de déconnexion
-        function logout() {
-            // Afficher un modal de confirmation
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                // Rediriger vers la page de login
-                window.location.href = 'login.html';
-            }
         }
 
         // Fermer le menu profil si on clique ailleurs
