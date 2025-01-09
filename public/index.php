@@ -41,7 +41,11 @@ Route::post('/alimenter', [ClientController::class,'handleAlimenterForm']);
 
 Route::post('/retrait', [ClientController::class,'handleRetraitForm']);
 
+Route::post('/update-profile', [ClientController::class,'updateProfile']);
+Route::post('/update-password', [ClientController::class,'updatePassword']);
+
 Route::get('/logout', [ClientController::class, 'logout']);
+
 
 
 

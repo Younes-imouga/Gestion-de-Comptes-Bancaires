@@ -29,7 +29,7 @@ class User extends DB{
                 $admin = $adminResult->fetch(PDO::FETCH_ASSOC);
                 
                 if ($user['email'] === $admin['email']) {
-                    // var_dump($user);die; 
+    
                     $_SESSION['is_admin'] = true;
                 } else {
                     $_SESSION['is_admin'] = false;
@@ -50,5 +50,49 @@ class User extends DB{
         $sql = "SELECT * FROM users";
     }
 
-    
+    public function getUserById($id) {
+        try {
+            $sql = "SELECT id, name, email FROM users WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error getting user: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function updateProfile($id, $name, $email) {
+        try {
+            $sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([$name, $email, $id]);
+        } catch(PDOException $e) {
+            error_log("Error updating profile: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function updatePassword($id, $current_password, $new_password) {
+        try {
+            $sql = "SELECT password FROM users WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$id]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!password_verify($current_password, $user['password'])) {
+                return false;
+                die;
+            }
+
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $sql = "UPDATE users SET password = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute([$hashed_password, $id]);
+        } catch(PDOException $e) {
+            error_log("Error updating password: " . $e->getMessage());
+            return false;
+            die;
+        }
+    }
 }
