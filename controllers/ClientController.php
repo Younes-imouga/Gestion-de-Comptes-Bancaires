@@ -87,11 +87,6 @@ class ClientController extends BaseController {
             'accounts' => $accounts
         ]);
     }
-    function displayprofile(){
-        $this->renderView('client/profile');
-    }
-
-
 
     public function handleAlimenterForm() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -140,6 +135,66 @@ class ClientController extends BaseController {
             }
 
             header('Location: /dashboard');
+            exit;
+        }
+    }
+
+    public function displayProfile() {
+        $userModel = new User();
+        $user = $userModel->getUserById($_SESSION['user_logged_in_id']);
+        
+        $this->renderView('client/profile', [
+            'user' => $user
+        ]);
+    }
+
+    public function updateProfile() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
+            
+            if (empty($name) || empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $_SESSION['error'] = "Données invalides";
+                header('Location: /profile');
+                exit;
+            }
+
+            $userModel = new User();
+            $result = $userModel->updateProfile($_SESSION['user_logged_in_id'], $name, $email);
+            
+            if ($result) {
+                $_SESSION['success'] = "Profil mis à jour avec succès";
+            } else {
+                $_SESSION['error'] = "Erreur lors de la mise à jour du profil";
+            }
+            
+            header('Location: /profile');
+            exit;
+        }
+    }
+
+    public function updatePassword() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $current_password = $_POST['current_password'] ?? '';
+            $new_password = $_POST['new_password'] ?? '';
+            $confirm_password = $_POST['confirm_password'] ?? '';
+            
+            if (empty($current_password) || empty($new_password) || $new_password !== $confirm_password) {
+                $_SESSION['error'] = "Mots de passe invalides ou ne correspondent pas";
+                header('Location: /profile');
+                exit;
+            }
+
+            $userModel = new User();
+            $result = $userModel->updatePassword($_SESSION['user_logged_in_id'], $current_password, $new_password);
+            
+            if ($result) {
+                $_SESSION['success'] = "Mot de passe mis à jour avec succès";
+            } else {
+                $_SESSION['error'] = "Mot de passe actuel incorrect";
+            }
+            
+            header('Location: /profile');
             exit;
         }
     }

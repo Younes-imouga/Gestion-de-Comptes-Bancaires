@@ -41,11 +41,17 @@ Route::post('/alimenter', [ClientController::class,'handleAlimenterForm']);
 
 Route::post('/retrait', [ClientController::class,'handleRetraitForm']);
 
-Route::get('/logout', [BaseController::class, 'logout']);
+
+Route::post('/update-profile', [ClientController::class,'updateProfile']);
+Route::post('/update-password', [ClientController::class,'updatePassword']);
+
+Route::get('/logout', [ClientController::class, 'logout']);
+
 
 Route::get("/dashboardAdmin", [AdminController::class, 'displayDashboardAdmin']);
 Route::get("/clients", [AdminController::class, 'displayClientAdmin']);
 Route::get("/compte", [AdminController::class, 'displayAccountsAdmin']);
 Route::get("/transactions", [AdminController::class, 'displaytransactionsAdmin']);
+
 
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
