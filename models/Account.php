@@ -47,7 +47,7 @@ class Account extends db
             $update_beneficiary_stmt = $this->conn->prepare($update_beneficiary_sql);
             $update_beneficiary_stmt->execute([$new_beneficiary_balance, $beneficiary_id]);
 
-            $transaction_sql = "INSERT INTO transactions (account_id, amount, beneficiary_account_id) VALUES (?, ?, ?)";
+            $transaction_sql = "INSERT INTO transactions (account_id, amount, beneficiary_account_id, transaction_type) VALUES (?, ?, ?, transfert)";
             $transaction_stmt = $this->conn->prepare($transaction_sql);
             $transaction_stmt->execute([$account_id, $amount, $beneficiary_id]);
 
@@ -82,15 +82,15 @@ class Account extends db
     {
         try {
             $sql = "SELECT t.*, 
-a1.account_type as sender_account_type,
-a1.user_id as sender_user_id,
-a2.account_type as beneficiary_account_type,
-a2.user_id as beneficiary_user_id
-FROM transactions t
-JOIN accounts a1 ON t.account_id = a1.id
-LEFT JOIN accounts a2 ON t.beneficiary_account_id = a2.id
-WHERE a1.user_id = ? OR a2.user_id = ?
-ORDER BY t.created_at DESC";
+                a1.account_type as sender_account_type,
+                a1.user_id as sender_user_id,
+                a2.account_type as beneficiary_account_type,
+                a2.user_id as beneficiary_user_id
+                FROM transactions t
+                JOIN accounts a1 ON t.account_id = a1.id
+                LEFT JOIN accounts a2 ON t.beneficiary_account_id = a2.id
+                WHERE a1.user_id = ? OR a2.user_id = ?
+                ORDER BY t.created_at DESC";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$user_id, $user_id]);
