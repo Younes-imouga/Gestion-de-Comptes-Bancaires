@@ -17,4 +17,10 @@ class BaseController
         extract($data);
         include __DIR__ . '/../views/client/' . $view . '.php';
     }   
+    public function logout() {
+        session_start();
+        session_destroy();
+        header('Location: /login');
+        exit;
+    }
 }
