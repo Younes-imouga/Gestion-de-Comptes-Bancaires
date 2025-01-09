@@ -43,6 +43,9 @@ Route::post('/retrait', [ClientController::class,'handleRetraitForm']);
 
 Route::get('/logout', [ClientController::class, 'logout']);
 
-
+Route::get("/dashboardAdmin", [AdminController::class, 'displayDashboardAdmin']);
+Route::get("/clients", [AdminController::class, 'displayClientAdmin']);
+Route::get("/compte", [AdminController::class, 'displayAccountsAdmin']);
+Route::get("/transactions", [AdminController::class, 'displaytransactionsAdmin']);
 
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
