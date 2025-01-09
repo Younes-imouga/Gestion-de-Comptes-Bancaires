@@ -41,7 +41,7 @@ Route::post('/alimenter', [ClientController::class,'handleAlimenterForm']);
 
 Route::post('/retrait', [ClientController::class,'handleRetraitForm']);
 
-Route::get('/logout', [ClientController::class, 'logout']);
+Route::get('/logout', [BaseController::class, 'logout']);
 
 Route::get("/dashboardAdmin", [AdminController::class, 'displayDashboardAdmin']);
 Route::get("/clients", [AdminController::class, 'displayClientAdmin']);

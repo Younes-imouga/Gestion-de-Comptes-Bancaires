@@ -143,12 +143,5 @@ class ClientController extends BaseController {
             exit;
         }
     }
-
-    public function logout() {
-        session_start();
-        session_destroy();
-        header('Location: /login');
-        exit;
-    }
 }
 ?>

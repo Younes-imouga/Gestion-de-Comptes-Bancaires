@@ -84,7 +84,7 @@
                                     Paramètres
                                 </a>
                                 <a 
-                                    href="javascript:logout()" 
+                                    href="/logout" 
                                     class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700 rounded-b-lg"
                                 >
                                     <i data-lucide="log-out" class="w-4 h-4 inline-block mr-2"></i>
@@ -159,14 +159,6 @@
             chevron.classList.toggle('rotate-180');
         }
 
-        // Fonction de déconnexion
-        function logout() {
-            // Afficher un modal de confirmation
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
-                // Rediriger vers la page de login
-                window.location.href = 'login.html';
-            }
-        }
 
         // Fermer le menu profil si on clique ailleurs
         document.addEventListener('click', function(event) {
