@@ -60,8 +60,7 @@ require_once (__DIR__.'/../models/User.php');
                         header('Location: /admin');
                     } else {
                         header('Location: /dashboard');
-                        unset($_SESSION['is_admin']);
-                    }                
+                        unset($_SESSION['is_admin']);               
                     
                     exit;
                 
@@ -72,6 +71,6 @@ require_once (__DIR__.'/../models/User.php');
       
          }
     }
-    
+}
 
 ?>

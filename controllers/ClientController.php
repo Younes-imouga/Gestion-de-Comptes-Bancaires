@@ -68,6 +68,7 @@ class ClientController extends BaseController {
             'transactions' => $transactions
         ]);
     }
+
     function displayTransactions(){
         $accountModel = new Account();
         $user_id = $_SESSION['user_logged_in_id'];
@@ -86,7 +87,6 @@ class ClientController extends BaseController {
             'accounts' => $accounts
         ]);
     }
-
 
     public function handleAlimenterForm() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
