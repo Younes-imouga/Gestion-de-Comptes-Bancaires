@@ -34,7 +34,14 @@ class AdminController extends BaseController {
         $this->renderAdmin('compte');
     }
     function displaytransactionsAdmin(){
-        $this->renderAdmin('transactions');
+        $adminModel = new Admin();
+        $transactions = $adminModel->getAllTransactions();
+        $statistics = $adminModel->getTransactionStatistics();
+        
+        $this->renderView('admin/transactions', [
+            'transactions' => $transactions,
+            'statistics' => $statistics
+        ]);
     }
 
 }
