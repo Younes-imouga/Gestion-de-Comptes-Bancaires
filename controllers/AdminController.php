@@ -12,6 +12,7 @@ class AdminController extends BaseController {
             }
         }
     }
+    
 
     function displayDashboardAdmin(){
         $this->renderAdmin('index');
@@ -30,9 +31,6 @@ class AdminController extends BaseController {
         ]);
     }
     
-    function displayAccountsAdmin(){
-        $this->renderAdmin('compte');
-    }
     function displaytransactionsAdmin(){
         $adminModel = new Admin();
         $transactions = $adminModel->getAllTransactions();
@@ -43,5 +41,52 @@ class AdminController extends BaseController {
             'statistics' => $statistics
         ]);
     }
+    public function AddUser() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouterUtilisateur'])) {
+            $adminModel = new Admin();
+            $name = htmlspecialchars(trim($_POST['name']));
+            $email = htmlspecialchars(trim($_POST['mail']));
+            $password = htmlspecialchars(trim($_POST['mdp']));
+            $typeCompte = htmlspecialchars(trim($_POST['compteType']));
 
+            if (empty($name) || empty($email) || empty($password) || empty($typeCompte)) {
+                return "Veuillez remplir tous les champs.";
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return "Adresse email invalide.";
+            }
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $success = $adminModel->insertUser($name, $email, $hashed_password);
+            if ($success) {
+                $user_id = $adminModel->GetUserID($name);
+                $valide = $adminModel->InsertAccount($user_id, $typeCompte);
+                header('location: /clients');
+
+                exit();
+            } else {
+                return "Erreur lors de l'insertion dans la base de données.";
+            }
+        }
+    }
+    function displayAccountsAdmin(){
+        $adminModel = new Admin();
+        $accounts = $adminModel->getComptes();
+        $this->renderView('admin/compte', [
+            'accounts' => $accounts
+        ]);
+    }
+
+    function activation(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['account_action'])) {
+            $id = $_POST['id'];
+            $action = $_POST['account_action'];
+            $adminModel = new Admin();
+
+            $result = $adminModel->activeDesactive($id, $action);
+            if ($result) {
+                header('location: /compte');
+            }
+        }
+    }
 }
