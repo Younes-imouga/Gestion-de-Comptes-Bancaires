@@ -32,31 +32,23 @@
 
                 <!-- Navigation -->
                 <nav class="mt-6 flex-grow">
-                        <a href="/dashboardAdmin" class="flex items-center w-full px-6 py-3 text-white bg-gray-800">
-                            <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
-                            <span>Dashboard</span>
-                        </a>
-                        <a href="/clients" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                            <i data-lucide="users" class="w-5 h-5 mr-3"></i>
-                            <span>Clients</span>
-                        </a>
-                        <a href="/compte" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                            <i data-lucide="credit-card" class="w-5 h-5 mr-3"></i>
-                            <span>Comptes</span>
-                        </a>
-                        <a href="/transactions" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                            <i data-lucide="repeat" class="w-5 h-5 mr-3"></i>
-                            <span>Transactions</span>
-                        </a>
-                        <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                            <i data-lucide="bell" class="w-5 h-5 mr-3"></i>
-                            <span>Notifications</span>
-                        </a>
-                        <a href="#" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
-                            <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
-                            <span>Paramètres</span>
-                        </a>
-                    </nav>
+                    <a href="/dashboardAdmin" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/clients" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                        <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                        <span>Clients</span>
+                    </a>
+                    <a href="/compte" class="flex items-center w-full px-6 py-3 text-gray-400 hover:text-white hover:bg-gray-800">
+                        <i data-lucide="credit-card" class="w-5 h-5 mr-3"></i>
+                        <span>Comptes</span>
+                    </a>
+                    <a href="/transactions" class="flex items-center w-full px-6 py-3 text-white bg-gray-800">
+                        <i data-lucide="repeat" class="w-5 h-5 mr-3"></i>
+                        <span>Transactions</span>
+                    </a>
+                </nav>
 
                 <!-- Profil Admin avec Déconnexion -->
                 <div class="border-t border-gray-800 p-6">
@@ -123,53 +115,60 @@
             <div class="bg-white p-6 rounded-lg shadow">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500">Transactions du jour</p>
-                        <p class="text-2xl font-bold text-gray-900">1,247</p>
+                        <p class="text-sm text-gray-500">Nombre de transactions</p>
+                        <p class="text-2xl font-bold text-gray-900"><?php echo number_format($statistics['total_count']); ?></p>
                     </div>
                     <div class="bg-blue-100 p-3 rounded-lg">
                         <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
                     </div>
                 </div>
-                <p class="text-sm text-blue-600 mt-2">+15% vs hier</p>
+                <p class="text-sm <?php echo $statistics['percentage_change'] >= 0 ? 'text-green-600' : 'text-red-600'; ?> mt-2">
+                    <?php echo ($statistics['percentage_change'] >= 0 ? '+' : '') . number_format($statistics['percentage_change'], 1); ?>% vs hier
+                </p>
             </div>
-
             <div class="bg-white p-6 rounded-lg shadow">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm text-gray-500">Volume total</p>
-                        <p class="text-2xl font-bold text-gray-900">€854,248</p>
+                        <p class="text-2xl font-bold text-gray-900">
+                            <?php echo number_format($statistics['total_volume'], 2, ',', ' '); ?> €
+                        </p>
                     </div>
                     <div class="bg-green-100 p-3 rounded-lg">
                         <i data-lucide="trending-up" class="w-6 h-6 text-green-600"></i>
                     </div>
                 </div>
-                <p class="text-sm text-green-600 mt-2">+4.2% ce mois</p>
+                <p class="text-sm text-gray-500 mt-2">Total des soldes de tous les comptes</p>
             </div>
 
             <div class="bg-white p-6 rounded-lg shadow">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-500">Transactions suspectes</p>
-                        <p class="text-2xl font-bold text-gray-900">15</p>
-                    </div>
-                    <div class="bg-red-100 p-3 rounded-lg">
-                        <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
-                    </div>
-                </div>
-                <p class="text-sm text-red-600 mt-2">5 à vérifier</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-lg shadow">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500">Frais générés</p>
-                        <p class="text-2xl font-bold text-gray-900">€2,450</p>
+                        <p class="text-sm text-gray-500">Total Dépôts</p>
+                        <p class="text-2xl font-bold text-gray-900">
+                            <?php echo number_format($statistics['total_deposits'], 2, ',', ' '); ?> €
+                        </p>
                     </div>
                     <div class="bg-purple-100 p-3 rounded-lg">
-                        <i data-lucide="wallet" class="w-6 h-6 text-purple-600"></i>
+                        <i data-lucide="arrow-down-circle" class="w-6 h-6 text-purple-600"></i>
                     </div>
                 </div>
-                <p class="text-sm text-purple-600 mt-2">+12% ce mois</p>
+                <p class="text-sm text-gray-500 mt-2">Montant total déposé</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500">Total Retraits</p>
+                        <p class="text-2xl font-bold text-gray-900">
+                            <?php echo number_format($statistics['total_withdrawals'], 2, ',', ' '); ?> €
+                        </p>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-lg">
+                        <i data-lucide="arrow-up-circle" class="w-6 h-6 text-red-600"></i>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">Montant total retiré</p>
             </div>
         </div>
 
@@ -251,99 +250,58 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Statut
                         </th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Actions
-                        </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    <!-- Transaction 1 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">#TRX-89012</div>
-                            <div class="text-sm text-gray-500">Virement interne</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <img src="/api/placeholder/40/40" alt="" class="h-10 w-10 rounded-full">
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">Thomas Robert</div>
-                                    <div class="text-sm text-gray-500">Compte: ...9012</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">Virement sortant</div>
-                            <div class="text-sm text-gray-500">Vers: Marie Dubois</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-red-600">-850.00 €</div>
-                            <div class="text-xs text-gray-500">Frais: 0.00 €</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">15 Jan 2024</div>
-                            <div class="text-sm text-gray-500">14:30</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Validé
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button onclick="toggleTransactionDetailsModal()" class="text-blue-600 hover:text-blue-900 mr-3">
-                                <i data-lucide="eye" class="w-5 h-5"></i>
-                            </button>
-                            <button class="text-red-600 hover:text-red-900">
-                                <i data-lucide="flag" class="w-5 h-5"></i>
-                            </button>
-                        </td>
-                    </tr>
-
-                    <!-- Transaction 2 -->
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">#TRX-89013</div>
-                            <div class="text-sm text-gray-500">Paiement CB</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    <img src="/api/placeholder/40/40" alt="" class="h-10 w-10 rounded-full">
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">Marie Dubois</div>
-                                    <div class="text-sm text-gray-500">Compte: ...9013</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">Achat en ligne</div>
-                            <div class="text-sm text-gray-500">Vers: Amazon</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-green-600">-120.00 €</div>
-                            <div class="text-xs text-gray-500">Frais: 1.50 €</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">15 Jan 2024</div>
-                            <div class="text-sm text-gray-500">15:00</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                En attente
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button onclick="toggleTransactionDetailsModal()" class="text-blue-600 hover:text-blue-900 mr-3">
-                                <i data-lucide="eye" class="w-5 h-5"></i>
-                            </button>
-                            <button class="text-red-600 hover:text-red-900">
-                                <i data-lucide="flag" class="w-5 h-5"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    <?php if (!empty($transactions)): ?>
+                        <?php foreach ($transactions as $transaction): ?>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900"><?php echo ucfirst($transaction['transaction_type']); ?></div>
+                                    <div class="text-sm text-gray-500">ID-<?php echo $transaction['id']; ?></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($transaction['sender_name']); ?></div>
+                                            <div class="text-sm text-gray-500">Compte: <?php echo $transaction['sender_account_type']; ?></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900"><?php echo ucfirst($transaction['transaction_type']); ?></div>
+                                    <?php if ($transaction['transaction_type'] === 'transfert'): ?>
+                                        <div class="text-sm text-gray-500">Vers: <?php echo htmlspecialchars($transaction['beneficiary_name']); ?></div>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium <?php echo $transaction['transaction_type'] === 'depot' ? 'text-green-600' : 'text-red-600'; ?>">
+                                        <?php echo ($transaction['transaction_type'] === 'depot' ? '+' : '-') . number_format($transaction['amount'], 2, ',', ' '); ?> €
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900"><?php echo date('d M Y', strtotime($transaction['created_at'])); ?></div>
+                                    <div class="text-sm text-gray-500"><?php echo date('H:i', strtotime($transaction['created_at'])); ?></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                        <?php echo match($transaction['transaction_type']) {
+                                            'depot' => 'bg-green-100 text-green-800',
+                                            'retrait' => 'bg-red-100 text-red-800',
+                                            'transfert' => 'bg-blue-100 text-blue-800'
+                                        }; ?>">
+                                        <?php echo ucfirst($transaction['transaction_type']); ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                Aucune transaction à afficher
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
