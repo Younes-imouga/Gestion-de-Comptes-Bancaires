@@ -32,14 +32,7 @@ class AdminController extends BaseController {
     }
     
     function displaytransactionsAdmin(){
-        $adminModel = new Admin();
-        $transactions = $adminModel->getAllTransactions();
-        $statistics = $adminModel->getTransactionStatistics();
-        
-        $this->renderView('admin/transactions', [
-            'transactions' => $transactions,
-            'statistics' => $statistics
-        ]);
+        $this->renderAdmin('transactions');
     }
     public function AddUser() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouterUtilisateur'])) {
@@ -89,4 +82,26 @@ class AdminController extends BaseController {
             }
         }
     }
+
+    
+
+    
+    public function updateUserController() {
+        $id = $_POST['id'];
+        $nom = $_POST['name'];
+        $email = $_POST['email'];
+        $userModel = new User();
+        // Mettre à jour les informations dans la base de données
+        
+       $result= $userModel->updateUser($id, $nom, $email) ;
+            if ($result) {
+
+            // Rediriger vers la liste des clients après mise à jour
+            header('Location: /compte');
+        } else {
+            // Gérer l'erreur de mise à jour
+            echo "Erreur lors de la mise à jour du client.";
+        }
+    }
+
 }

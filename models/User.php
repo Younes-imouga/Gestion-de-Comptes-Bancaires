@@ -107,4 +107,14 @@ class User extends DB{
         }
     }
 
+    
+    public function updateUser($id, $nom, $email){
+        $sql= "UPDATE users SET name = ?, email = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$nom, $email, $id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+       
+    }
+
 }
