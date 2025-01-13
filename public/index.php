@@ -59,4 +59,6 @@ Route::get("/transactions", [AdminController::class, 'displaytransactionsAdmin']
 
 Route::post("/addclient",[AdminController::class, 'AddUser']);
 
+Route::post("/clients",[AdminController::class, 'updateUserController']);
+
 $router->dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

@@ -117,8 +117,9 @@ class AdminController extends BaseController {
         $userModel = new User();
 
        $result= $userModel->updateUser($id, $nom, $email) ;
+
         if ($result) {
-            header('Location: /compte');
+            header('Location: /clients');
         } else {
             echo "Erreur lors de la mise à jour du client.";
         }
