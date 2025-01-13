@@ -104,19 +104,66 @@
 
             <!-- Content -->
             <div class="p-8">
-                <!-- Statistics Cards existant -->
+                <!-- Statistics Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                    <!-- ... Cartes existantes ... -->
                     <div class="bg-white p-6 rounded-lg shadow">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-gray-500">Comptes</p>
-                                <p class="text-2xl font-bold text-gray-900"></p>
+                                <p class="text-sm text-gray-500">Total des comptes</p>
+                                <p class="text-2xl font-bold text-gray-900">
+                                    <?php echo number_format($statistics['total_accounts']); ?>
+                                </p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <i data-lucide="credit-card" class="w-6 h-6 text-blue-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Nombre total de comptes</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Comptes actifs</p>
+                                <p class="text-2xl font-bold text-gray-900">
+                                    <?php echo number_format($statistics['active_accounts']); ?>
+                                </p>
                             </div>
                             <div class="bg-green-100 p-3 rounded-lg">
                                 <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
                             </div>
                         </div>
+                        <p class="text-sm text-gray-500 mt-2">Comptes en service</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Comptes désactivés</p>
+                                <p class="text-2xl font-bold text-gray-900">
+                                    <?php echo number_format($statistics['Desactive_accounts']); ?>
+                                </p>
+                            </div>
+                            <div class="bg-red-100 p-3 rounded-lg">
+                                <i data-lucide="x-circle" class="w-6 h-6 text-red-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Comptes hors service</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Volume total</p>
+                                <p class="text-2xl font-bold text-gray-900">
+                                    <?php echo number_format($statistics['total_balance'], 2, ',', ' '); ?> €
+                                </p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-lg">
+                                <i data-lucide="wallet" class="w-6 h-6 text-purple-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">Total des soldes</p>
                     </div>
                 </div>
 
@@ -202,9 +249,6 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    <img src="/api/placeholder/40/40" alt="" class="h-10 w-10 rounded-full">
-                                                </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($account['user_name']); ?></div>
                                                     <div class="text-sm text-gray-500"><?php echo htmlspecialchars($account['user_email']); ?></div>
@@ -233,7 +277,6 @@
                                                         desactive
                                                     </button>
                                                 </form>
-
                                                 </div>
                                             </td>";
                                         } else {

@@ -32,7 +32,6 @@ class Admin extends User{
     }
 
     public function GetUserID($name) {
-        // get The Id of the user
         $query= "SELECT id FROM users WHERE name= ?";
         $stmt=$this->conn->prepare($query);
         $stmt->execute([$name]);
@@ -43,31 +42,31 @@ class Admin extends User{
     public function InsertAccount($user_id, $typeCompte) {            
         if($typeCompte === "both") {
           
-            // 1 - insert epargne
 
             $query1="INSERT INTO accounts(user_id,account_type) VALUES (?, 'epargne')"; 
             $stmt1 = $this->conn->prepare($query1);
             $result1 = $stmt1->execute([$user_id]);
-            // 2 - insert Courant
             $query2="INSERT INTO accounts(user_id,account_type) VALUES (?, 'courant')"; 
             $stmt2 = $this->conn->prepare($query2);
             $result2 = $stmt2->execute([$user_id]);
 
+            if ($result1 && $result2) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } else {
+            $query="INSERT INTO accounts(user_id,account_type) VALUES (?, ?)"; 
+            $stmt = $this->conn->prepare($query);
+            $result = $stmt->execute([$user_id,$typeCompte]);
+            return $result;
+        }
+    }
+
     public function getAllTransactions() {
         try {
-            $sql = "SELECT t.*, 
-                a1.account_type as sender_account_type,
-                a1.user_id as sender_user_id,
-                u1.name as sender_name,
-                a2.account_type as beneficiary_account_type,
-                a2.user_id as beneficiary_user_id,
-                u2.name as beneficiary_name
-                FROM transactions t
-                JOIN accounts a1 ON t.account_id = a1.id
-                LEFT JOIN accounts a2 ON t.beneficiary_account_id = a2.id
-                LEFT JOIN users u1 ON a1.user_id = u1.id
-                LEFT JOIN users u2 ON a2.user_id = u2.id
-                ORDER BY t.created_at DESC";
+            $sql = "SELECT t.*,  a1.account_type as sender_account_type, a1.user_id as sender_user_id, u1.name as sender_name, a2.account_type as beneficiary_account_type, a2.user_id as beneficiary_user_id, u2.name as beneficiary_name FROM transactions t JOIN accounts a1 ON t.account_id = a1.id LEFT JOIN accounts a2 ON t.beneficiary_account_id = a2.id LEFT JOIN users u1 ON a1.user_id = u1.id LEFT JOIN users u2 ON a2.user_id = u2.id ORDER BY t.created_at DESC";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
@@ -79,43 +78,28 @@ class Admin extends User{
     }
     public function getTransactionStatistics() {
         try {
-            // Get total deposits
-            $sqlDeposits = "SELECT COALESCE(SUM(amount), 0) as total, COUNT(*) as count 
-                           FROM transactions 
-                           WHERE transaction_type = 'depot'";
+            $sqlDeposits = "SELECT COALESCE(SUM(amount), 0) as total, COUNT(*) as count FROM transactions WHERE transaction_type = 'depot'";
             $stmtDeposits = $this->conn->query($sqlDeposits);
             $deposits = $stmtDeposits->fetch(PDO::FETCH_ASSOC);
 
-            // Get total withdrawals
-            $sqlWithdrawals = "SELECT COALESCE(SUM(amount), 0) as total, COUNT(*) as count 
-                              FROM transactions 
-                              WHERE transaction_type = 'retrait'";
+            $sqlWithdrawals = "SELECT COALESCE(SUM(amount), 0) as total, COUNT(*) as count FROM transactions WHERE transaction_type = 'retrait'";
             $stmtWithdrawals = $this->conn->query($sqlWithdrawals);
             $withdrawals = $stmtWithdrawals->fetch(PDO::FETCH_ASSOC);
 
-            // Get total transfers
-            $sqlTransfers = "SELECT COALESCE(SUM(amount), 0) as total, COUNT(*) as count 
-                            FROM transactions 
-                            WHERE transaction_type = 'transfert'";
+            $sqlTransfers = "SELECT COALESCE(SUM(amount), 0) as total, COUNT(*) as count FROM transactions WHERE transaction_type = 'transfert'";
             $stmtTransfers = $this->conn->query($sqlTransfers);
             $transfers = $stmtTransfers->fetch(PDO::FETCH_ASSOC);
 
-            // Get total volume (sum of all account balances)
             $sqlTotalVolume = "SELECT COALESCE(SUM(balance), 0) as total FROM accounts";
             $stmtTotalVolume = $this->conn->query($sqlTotalVolume);
             $totalVolume = $stmtTotalVolume->fetch(PDO::FETCH_ASSOC)['total'];
 
-            // Get total transaction count
             $totalCount = $deposits['count'] + $withdrawals['count'] + $transfers['count'];
 
-            // Get yesterday's transaction count for comparison
-            $sqlYesterday = "SELECT COUNT(*) as count 
-                            FROM transactions 
-                            WHERE DATE(created_at) = DATE(NOW() - INTERVAL 1 DAY)";
+            $sqlYesterday = "SELECT COUNT(*) as count FROM transactions WHERE DATE(created_at) = DATE(NOW() - INTERVAL 1 DAY)";
             $stmtYesterday = $this->conn->query($sqlYesterday);
             $yesterdayCount = $stmtYesterday->fetch(PDO::FETCH_ASSOC)['count'];
 
-            // Calculate percentage change
             $percentageChange = $yesterdayCount > 0 
                 ? (($totalCount - $yesterdayCount) / $yesterdayCount) * 100 
                 : 0;
@@ -134,21 +118,6 @@ class Admin extends User{
         }
     }
 
-            if ($result1 && $result2) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } else {
-            // insert $typeCompte
-            $query="INSERT INTO accounts(user_id,account_type) VALUES (?, ?)"; 
-            $stmt = $this->conn->prepare($query);
-            $result = $stmt->execute([$user_id,$typeCompte]);
-            return $result;
-        }
-    }
-
     public function getComptes(){
         $sql= " SELECT accounts.*, users.name AS user_name, users.email AS user_email FROM  accounts 
         JOIN users ON accounts.user_id = users.id ";
@@ -161,8 +130,71 @@ class Admin extends User{
     public function activeDesactive($id, $action){
             $sql= "UPDATE accounts SET status = ? WHERE id = ?";
             $stmt = $this->conn->prepare($sql);
-            $stmt->execute([$action, $id]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);  
+            $result = $stmt->execute([$action, $id]);
+            return $result;  
+    }
 
+    public function getAccountStatistics() {
+        try {
+            $sqlTotal = "SELECT COUNT(*) as total FROM accounts";
+            $stmtTotal = $this->conn->query($sqlTotal);
+            $totalAccounts = $stmtTotal->fetch(PDO::FETCH_ASSOC)['total'];
+
+            $sqlActive = "SELECT COUNT(*) as active FROM accounts WHERE status = 'active'";
+            $stmtActive = $this->conn->query($sqlActive);
+            $activeAccounts = $stmtActive->fetch(PDO::FETCH_ASSOC)['active'];
+
+            $sqlDesactive = "SELECT COUNT(*) as desactive FROM accounts WHERE status = 'desactive'";
+            $stmtDesactive = $this->conn->query($sqlDesactive);
+            $DesactiveAccounts = $stmtDesactive->fetch(PDO::FETCH_ASSOC)['desactive'];
+
+            $sqlBalance = "SELECT COALESCE(SUM(balance), 0) as total_balance FROM accounts";
+            $stmtBalance = $this->conn->query($sqlBalance);
+            $totalBalance = $stmtBalance->fetch(PDO::FETCH_ASSOC)['total_balance'];
+
+            return [
+                'total_accounts' => $totalAccounts,
+                'active_accounts' => $activeAccounts,
+                'Desactive_accounts' => $DesactiveAccounts,
+                'total_balance' => $totalBalance
+            ];
+        } catch(PDOException $e) {
+            error_log("Error getting account statistics: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    public function getDashboardStatistics() {
+        try {
+            $sqlUsers = "SELECT COUNT(*) as total FROM users";
+            $stmtUsers = $this->conn->query($sqlUsers);
+            $totalUsers = $stmtUsers->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+
+            $sqlAccounts = "SELECT  COUNT(*) as total_accounts, SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) as active_accounts, SUM(CASE WHEN status = 'inactive' THEN 1 ELSE 0 END) as inactive_accounts, COALESCE(SUM(balance), 0) as total_balance FROM accounts";
+            $stmtAccounts = $this->conn->query($sqlAccounts);
+            $accountStats = $stmtAccounts->fetch(PDO::FETCH_ASSOC);
+
+            $sqlTransactions = "SELECT  COUNT(*) as total_count, COALESCE(SUM(CASE WHEN transaction_type = 'depot' THEN amount ELSE 0 END), 0) as total_deposits, COALESCE(SUM(CASE WHEN transaction_type = 'retrait' THEN amount ELSE 0 END), 0) as total_withdrawals, COALESCE(SUM(CASE WHEN transaction_type = 'transfert' THEN amount ELSE 0 END), 0) as total_transfers FROM transactions";
+            $stmt = $this->conn->query($sqlTransactions);
+            $Stats = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $sqlRecent = "SELECT t.*, u.name as sender_name  FROM transactions t JOIN accounts a ON t.account_id = a.id JOIN users u ON a.user_id = u.id ORDER BY t.created_at DESC LIMIT 5";
+            $stmtRecent = $this->conn->query($sqlRecent);
+            $recentTransactions = $stmtRecent->fetchAll(PDO::FETCH_ASSOC);
+
+            return [
+                'total_accounts' => $accountStats['total_accounts'] ?? 0,
+                'active_accounts' => $accountStats['active_accounts'] ?? 0,
+                'inactive_accounts' => $accountStats['inactive_accounts'] ?? 0,
+                'total_balance' => $accountStats['total_balance'] ?? 0,
+                'total_users' => $totalUsers,
+                'transactions' => $Stats['total_count'] ?? 0,
+                'deposits' => $Stats['total_deposits'] ?? 0,
+                'withdrawals' => $Stats['total_withdrawals'] ?? 0,
+                'recent_transactions' => $recentTransactions
+            ];
+        } catch(PDOException $e) {
+            error_log("Error getting dashboard statistics: " . $e->getMessage());
+        }
     }
 }

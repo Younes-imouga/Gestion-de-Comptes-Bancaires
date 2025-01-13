@@ -81,16 +81,7 @@ class Account extends db
     public function getTransactions($user_id)
     {
         try {
-            $sql = "SELECT t.*, 
-                a1.account_type as sender_account_type,
-                a1.user_id as sender_user_id,
-                a2.account_type as beneficiary_account_type,
-                a2.user_id as beneficiary_user_id
-                FROM transactions t
-                JOIN accounts a1 ON t.account_id = a1.id
-                LEFT JOIN accounts a2 ON t.beneficiary_account_id = a2.id
-                WHERE a1.user_id = ? OR a2.user_id = ?
-                ORDER BY t.created_at DESC";
+            $sql = "SELECT t.*,  a1.account_type as sender_account_type, a1.user_id as sender_user_id, a2.account_type as beneficiary_account_type, a2.user_id as beneficiary_user_id FROM transactions t JOIN accounts a1 ON t.account_id = a1.id LEFT JOIN accounts a2 ON t.beneficiary_account_id = a2.id WHERE a1.user_id = ? OR a2.user_id = ? ORDER BY t.created_at DESC";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$user_id, $user_id]);
@@ -104,13 +95,17 @@ class Account extends db
     public function alimenter($account_id, $amount)
     {
         try {
+            $accountType = $this->getAccountType($account_id);
+            if ($accountType === 'epargne') {
+                $_SESSION['error'] = "Les dépôts directs ne sont pas autorisés sur un compte épargne. Veuillez utiliser un virement.";
+                return false;
+            }
+
             $this->conn->beginTransaction();
-
-
+            
             $sql = "UPDATE accounts SET balance = balance + ? WHERE id = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$amount, $account_id]);
-
 
             $sql = "INSERT INTO transactions (account_id, transaction_type, amount) VALUES (?, 'depot', ?)";
             $stmt = $this->conn->prepare($sql);
@@ -118,7 +113,7 @@ class Account extends db
 
             $this->conn->commit();
             return true;
-        } catch (PDOException $e) {
+        } catch(PDOException $e) {
             $this->conn->rollBack();
             error_log("Error in alimenter: " . $e->getMessage());
             return false;
@@ -128,8 +123,13 @@ class Account extends db
     public function retrait($account_id, $amount)
     {
         try {
-            $this->conn->beginTransaction();
+            $accountType = $this->getAccountType($account_id);
+            if ($accountType === 'epargne') {
+                $_SESSION['error'] = "Les retraits directs ne sont pas autorisés sur un compte épargne. Veuillez utiliser un virement.";
+                return false;
+            }
 
+            $this->conn->beginTransaction();
 
             $sql = "SELECT balance FROM accounts WHERE id = ?";
             $stmt = $this->conn->prepare($sql);
@@ -138,14 +138,13 @@ class Account extends db
 
             if ($account['balance'] < $amount) {
                 $this->conn->rollBack();
+                $_SESSION['error'] = "Solde insuffisant pour effectuer cette opération.";
                 return false;
             }
-
 
             $sql = "UPDATE accounts SET balance = balance - ? WHERE id = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$amount, $account_id]);
-
 
             $sql = "INSERT INTO transactions (account_id, transaction_type, amount) VALUES (?, 'retrait', ?)";
             $stmt = $this->conn->prepare($sql);
@@ -153,11 +152,37 @@ class Account extends db
 
             $this->conn->commit();
             return true;
-        } catch (PDOException $e) {
+        } catch(PDOException $e) {
             $this->conn->rollBack();
             error_log("Error in retrait: " . $e->getMessage());
             return false;
         }
     }
-  
+
+    public function isAccountActive($account_id) {
+        try {
+            $sql = "SELECT status FROM accounts WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$account_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result && $result['status'] === 'active';
+        } catch(PDOException $e) {
+            error_log("Error checking account status: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getAccountType($account_id) {
+        try {
+            $sql = "SELECT account_type FROM accounts WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$account_id]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['account_type'] : null;
+        } catch(PDOException $e) {
+            error_log("Error getting account type: " . $e->getMessage());
+            return null;
+        }
+    }
 }

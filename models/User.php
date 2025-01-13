@@ -32,7 +32,7 @@ class User extends DB{
                     $_SESSION['is_admin'] = true;
                 } else {
                     $_SESSION['is_admin'] = false;
-                } 
+                }
 
                 return $user;
             } else {

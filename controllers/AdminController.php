@@ -15,7 +15,12 @@ class AdminController extends BaseController {
     
 
     function displayDashboardAdmin(){
-        $this->renderAdmin('index');
+        $adminModel = new Admin();
+        $statistics = $adminModel->getDashboardStatistics();
+        
+        $this->renderAdmin('index', [
+            'statistics' => $statistics
+        ]);
     }
     function displayClientAdmin(){
         $adminModel = new Admin();
@@ -41,6 +46,7 @@ class AdminController extends BaseController {
             'statistics' => $statistics
         ]);
     }
+    
     public function AddUser() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouterUtilisateur'])) {
             $adminModel = new Admin();
@@ -72,8 +78,11 @@ class AdminController extends BaseController {
     function displayAccountsAdmin(){
         $adminModel = new Admin();
         $accounts = $adminModel->getComptes();
+        $statistics = $adminModel->getAccountStatistics();
+        
         $this->renderView('admin/compte', [
-            'accounts' => $accounts
+            'accounts' => $accounts,
+            'statistics' => $statistics
         ]);
     }
 
@@ -88,5 +97,16 @@ class AdminController extends BaseController {
                 header('location: /compte');
             }
         }
+    }
+
+    public function displayComptes() {
+        $adminModel = new Admin();
+        $accounts = $adminModel->getComptes();
+        $statistics = $adminModel->getAccountStatistics();
+        
+        $this->renderView('admin/compte', [
+            'accounts' => $accounts,
+            'statistics' => $statistics
+        ]);
     }
 }

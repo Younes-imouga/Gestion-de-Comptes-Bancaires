@@ -5,12 +5,11 @@ class client extends User{
 
     public function __construct(){
         parent::__construct();
-        }
+    }
        
     function insertTransaction( $amount, $beneficiary_account_id, $transaction_type) {
         try {
-            $sql = "INSERT INTO transactions ( amount, beneficiary_account_id, transaction_type)
-                    VALUES (?,?,?)";
+            $sql = "INSERT INTO transactions ( amount, beneficiary_account_id, transaction_type) VALUES (?,?,?)";
             
             $stmt = $this->conn->prepare($sql);
 
