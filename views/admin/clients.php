@@ -165,9 +165,12 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex space-x-2">
-                                                <button onclick="deleteClient(<?php echo $user['id']; ?>)" class="text-red-600 hover:text-red-900">
+                                            <div class="flex space-x-2">
+                                                <button onclick="openEditForm(<?= $user['id']; ?>, '<?= htmlspecialchars($user['name']); ?>','<?= htmlspecialchars($user['email']); ?>')"
+                                                    class="text-red-600 hover:text-red-900">
                                                     EDIT
                                                 </button>
+                                            </div>
                                             </div>      
                                         </td>
                                     </tr>
@@ -314,11 +317,25 @@
                     function submitAddClientForm() {
                         const form = document.getElementById('addClientForm');
                         if (form.checkValidity()) {
+                            // Traitement du formulaire ici
                             alert('Client ajouté avec succès !');
                             toggleAddClientModal();
                         } else {
                             form.reportValidity();
                         }
+                    }
+
+                    function toggleEditClientModal() {
+                        const modal = document.getElementById('editClientModal');
+                        modal.classList.toggle('hidden');
+                    }
+
+                    function openEditForm(id, nom, email) {
+                        console.log(email); // Vérifiez si l'email est passé correctement
+                        document.getElementById('editId').value = id;
+                        document.getElementById('editNom').value = nom;
+                        document.getElementById('editEmail').value = email;
+                        toggleEditClientModal();
                     }
                 </script>
 </body>

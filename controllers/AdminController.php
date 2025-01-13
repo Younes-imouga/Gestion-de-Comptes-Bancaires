@@ -109,4 +109,18 @@ class AdminController extends BaseController {
             'statistics' => $statistics
         ]);
     }
+
+    public function updateUserController() {
+        $id = $_POST['id'];
+        $nom = $_POST['name'];
+        $email = $_POST['email'];
+        $userModel = new User();
+
+       $result= $userModel->updateUser($id, $nom, $email) ;
+        if ($result) {
+            header('Location: /compte');
+        } else {
+            echo "Erreur lors de la mise à jour du client.";
+        }
+    }
 }
